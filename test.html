@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="style.css">
+    <title>画板</title>
+</head>
+
+<body>
+    <canvas id="tutorial" width="150" height="150"></canvas>
+    <script>
+        let canvas = document.querySelector('#tutorial');
+        // console.log(1, canvas);
+        canvas.width = document.documentElement.clientWidth;
+        canvas.height = document.documentElement.clientHeight;
+        let ctx = canvas.getContext("2d");
+        ctx.lineCap = "around"
+        ctx.fillStyle = "#000";
+        ctx.strokeStyle = 'none'
+        let state = false;
+        let isTouchDevice = 'ontouchstart' in document.documentElement;
+
+        if (!isTouchDevice) {
+            canvas.onmousedown = () => {
+                state = true;
+            }
+            canvas.onmouseup = () => {
+                state = false;
+            }
+            canvas.onmousemove = (e) => {
+                if (state) {
+                    ctx.beginPath();
+                    ctx.arc(e.clientX, e.clientY, 10, 0, 2 * Math.PI);
+                    ctx.stroke();
+                    ctx.fill();
+                }
+            }
+        } else {
+            canvas.ontouchmove = (e) => {
+                ctx.beginPath();
+                ctx.arc(e.touches[0].clientX, e.touches[0].clientY, 10, 0, 2 * Math.PI);
+                ctx.stroke();
+                ctx.fill();
+            }
+        }
+
+
+
+
+
+    </script>
+</body>
+
+</html>
