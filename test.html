@@ -20,8 +20,8 @@
         ctx.lineWidth = 10;
         ctx.lineCap = "round"
         ctx.fillStyle = "#000";
-     
-        
+
+
         let state = false;
         let isTouchDevice = 'ontouchstart' in document.documentElement;
         let last;
@@ -29,29 +29,33 @@
         if (!isTouchDevice) {
             canvas.onmousedown = (e) => {
                 state = true;
-                last=[e.clientX,e.clientY];
+                last = [e.clientX, e.clientY];
             }
             canvas.onmouseup = () => {
                 state = false;
             }
             canvas.onmousemove = (e) => {
                 if (state) {
-                    console.log(last[0],last[1],e.clientX,e.clientY);
-                    drawLine(last[0],last[1],e.clientX,e.clientY)
-                    last=[e.clientX,e.clientY]
+                    console.log(last[0], last[1], e.clientX, e.clientY);
+                    drawLine(last[0], last[1], e.clientX, e.clientY)
+                    last = [e.clientX, e.clientY]
                 }
             }
         } else {
-        
+            canvas.ontouchstart =(e)=>{
+                let x = e.touches[0].clientX;
+                let y = e.touches[0].clientY;
+                last = [x, y]
+            }
             canvas.ontouchmove = (e) => {
-                ctx.beginPath();
-                ctx.arc(e.touches[0].clientX, e.touches[0].clientY, 10, 0, 2 * Math.PI);
-                ctx.stroke();
-                ctx.fill();
+                let x = e.touches[0].clientX;
+                let y = e.touches[0].clientY;
+                drawLine(last[0], last[1], x, y)
+                last = [x, y]
             }
         }
 
-        function drawLine(x1,y1,x2,y2) {
+        function drawLine(x1, y1, x2, y2) {
             ctx.beginPath();
             ctx.moveTo(x1, y1);
             ctx.lineTo(x2, y2);
